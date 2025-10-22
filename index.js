@@ -36,6 +36,13 @@ fastify.get("/", async (_, reply) => {
   reply.send({ message: "Server is running" });
 });
 
+// --- NEW HEALTH CHECK ROUTE ---
+// Lightweight health check route for monitoring services
+fastify.get("/health", async (_, reply) => {
+  reply.send({ status: "ok" });
+});
+// ------------------------------
+
 // Route to handle incoming calls from Twilio
 fastify.all("/incoming-call-eleven", async (request, reply) => {
   // Generate TwiML response to connect the call to a WebSocket stream
@@ -125,7 +132,7 @@ fastify.register(async (fastifyInstance) => {
           case "media":
             if (elevenLabsWs.readyState === WebSocket.OPEN) {
               const audioMessage = {
-                user_audio_chunk: Buffer.from(data.media.payload, "base64").toString("base64"),
+                user_audio_chunk: Buffer.from(data.media.payload, "base664").toString("base64"),
               };
               elevenLabsWs.send(JSON.stringify(audioMessage));
             }
@@ -177,7 +184,7 @@ fastify.post("/make-outbound-call", async (request, reply) => {
 });
 
 // Start the Fastify server
-fastify.listen({ port: PORT }, (err) => {
+fastify.listen({ port: PORT, host: '0.0.0.0' }, (err) => {
   if (err) {
     console.error("Error starting server:", err);
     process.exit(1);
