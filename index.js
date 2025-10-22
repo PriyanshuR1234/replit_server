@@ -132,7 +132,7 @@ fastify.register(async (fastifyInstance) => {
           case "media":
             if (elevenLabsWs.readyState === WebSocket.OPEN) {
               const audioMessage = {
-                user_audio_chunk: Buffer.from(data.media.payload, "base664").toString("base64"),
+                user_audio_chunk: Buffer.from(data.media.payload, "base64").toString("base64"),
               };
               elevenLabsWs.send(JSON.stringify(audioMessage));
             }
